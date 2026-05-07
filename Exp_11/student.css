@@ -1,0 +1,36 @@
+students {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    display: block;
+}
+
+student {
+    display: block;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+student:before {
+    content: "Student ID: " attr(id);
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+name {
+    display: block;
+    color: #333;
+    font-weight: bold;
+}
+
+course {
+    display: block;
+    color: #666;
+}
+
+semester {
+    display: block;
+    color: #666;
+}
