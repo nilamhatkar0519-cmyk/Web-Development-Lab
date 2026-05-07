@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment Index</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --shadow: rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, sans-serif;
+      background: linear-gradient(180deg, #eef2ff 0%, #ffffff 45%, #f8fafc 100%);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.04em;
+      color: #0f172a;
+    }
+
+    header p {
+      margin: 12px auto 0;
+      max-width: 680px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    hr {
+      width: 80%;
+      border: 0;
+      height: 1px;
+      background: #e2e8f0;
+      margin: 24px auto 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 16px 30px var(--shadow);
+      transition: transform 0.24s ease, box-shadow 0.24s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 42px rgba(15, 23, 42, 0.18);
+    }
+
+    .card a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 1.25rem;
+      color: #1e293b;
+    }
+
+    .card p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .card:nth-child(1) { background: #ffe4e6; }
+    .card:nth-child(2) { background: #ffedd5; }
+    .card:nth-child(3) { background: #fef3c7; }
+    .card:nth-child(4) { background: #dcfce7; }
+    .card:nth-child(5) { background: #dbeafe; }
+    .card:nth-child(6) { background: #ede9fe; }
+    .card:nth-child(7) { background: #f5d0fe; }
+    .card:nth-child(8) { background: #fee2e2; }
+    .card:nth-child(9) { background: #f0f9ff; }
+    .card:nth-child(10) { background: #d8f5e1; }
+    .card:nth-child(11) { background: #fde68a; }
+    .card:nth-child(12) { background: #c7d2fe; }
+    .card:nth-child(13) { background: #d9f99d; }
+
+    .detail-section {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px var(--shadow);
+    }
+
+    .detail-section.active {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .close-btn {
+      float: right;
+      background: #e2e8f0;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: #cbd5e1;
+    }
+
+    .exp-header {
+      clear: both;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .exp-header h3 {
+      margin: 0 0 8px;
+      color: #1e293b;
+      font-size: 1.5rem;
+    }
+
+    .info-box {
+      background: #f1f5f9;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .code-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .code-btn.xml { background: #667eea; color: white; }
+    .code-btn.xml:hover { background: #5568d3; }
+    .code-btn.xml.active { box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
+
+    .code-btn.css { background: #764ba2; color: white; }
+    .code-btn.css:hover { background: #64408a; }
+    .code-btn.css.active { box-shadow: 0 4px 12px rgba(118, 75, 162, 0.4); }
+
+    .code-btn.xsl { background: #f5576c; color: white; }
+    .code-btn.xsl:hover { background: #e24658; }
+    .code-btn.xsl.active { box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4); }
+
+    .code-container {
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      display: none;
+      overflow-x: auto;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .code-container.active {
+      display: block;
+    }
+
+    pre {
+      color: #d4d4d4;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .tag { color: #569cd6; }
+    .attr { color: #9cdcfe; }
+    .value { color: #ce9178; }
+    .comment { color: #6a9955; }
+
+    .output-preview {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+
+    .output-preview h4 {
+      margin: 0 0 10px;
+      color: #1e293b;
+    }
+
+    .output-preview p {
+      margin: 6px 0;
+      color: #475569;
+      font-size: 0.9rem;
+    }
+
+    .output-preview b {
+      color: #764ba2;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #667eea;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) { background: #f8fafc; }
+
+    .footer {
+      margin-top: 48px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1> Web Development Experiments</h1>
+      <h2> <b>Name :</b> Nilam Hatakar </h2>    
+      <h2> <b>Roll No :</b> 70 </h2>
+      <hr>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <a href="Exp_1.html"> 
+          <h2>Experiment No 1</h2>
+          <p> Web Technology Basics </p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_2.html">
+          <h2>Experiment No 2</h2>
+          <p> Web pages using HTML tags</p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_3.html">
+          <h2>Experiment No 3</h2>
+          <p> Web page with All Text Formatting tags</p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_4.html">
+          <h2>Experiment No 4</h2>
+          <p> Web page using List tag</p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_5.html">
+          <h2>Experiment No 5</h2>
+          <p> Web page to include image</p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_6.html">
+          <h2>Experiment No 6</h2>
+          <p> Web page include Frames</p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_7.html">
+          <h2>Experiment No 7</h2>
+          <p> Demonstrate the use of link tag</p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_8.html">
+          <h2>Experiment No 8</h2>
+          <p> Demonstrate the use of list tag</p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_9.html">
+          <h2>Experiment No 9</h2>
+          <p> Employee Registration web page</p>
+        </a>
+      </article>
+      <article class="card">
+        <a href="Exp_10.html">
+          <h2>Experiment No 10</h2>
+          <p> Resume as web page</p>
+        </a>
+      </article>
+      <article class="card" onclick="toggleExp11()">
+        <h2>Experiment No 11</h2>
+        <p> Study & implementation of XML with CSS Styling</p>
+      </article>
+      <article class="card" onclick="toggleExp12()">
+        <h2>Experiment No 12</h2>
+        <p> Implementation of XSLT to transform XML to HTML</p>
+      </article>
+      <article class="card" onclick="toggleExp13()">
+        <h2>Experiment No 13</h2>
+        <p> Student Application using XSLT and conditional statements</p>
+      </article>
+    </section>
+
+    <!-- Experiment 11 Detail -->
+    <div class="detail-section" id="exp11-detail">
+      <button class="close-btn" onclick="toggleExp11()">Close</button>
+      <div class="exp-header">
+        <h3>Experiment 11: XML Study & Implementation with CSS</h3>
+        <p><b>Objective:</b> To understand XML basics and its application with CSS styling.</p>
+      </div>
+      <div class="info-box">
+        <b>Name:</b> Nilam Hatakar | <b>Roll No:</b> 70
+      </div>
+      <div class="button-group">
+        <button class="code-btn xml active" onclick="showExp11Code('xml')">View XML Code</button>
+        <button class="code-btn css" onclick="showExp11Code('css')">View CSS Code</button>
+      </div>
+      <div id="exp11-xml" class="code-container active">
+        <pre><span class="comment">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="comment">&lt;?xml-stylesheet type="text/css" href="student.css"?&gt;</span>
+<span class="tag">&lt;students&gt;</span>
+  <span class="tag">&lt;student</span> <span class="attr">id</span>=<span class="value">"70"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;name&gt;</span>Nilam Hatakar<span class="tag">&lt;/name&gt;</span>
+    <span class="tag">&lt;course&gt;</span>B.Tech CSE<span class="tag">&lt;/course&gt;</span>
+    <span class="tag">&lt;semester&gt;</span>IV<span class="tag">&lt;/semester&gt;</span>
+  <span class="tag">&lt;/student&gt;</span>
+<span class="tag">&lt;/students&gt;</span></pre>
+      </div>
+      <div id="exp11-css" class="code-container">
+        <pre>students {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    display: block;
+}
+
+student {
+    display: block;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+student:before {
+    content: "Student ID: " attr(id);
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+name {
+    display: block;
+    color: #333;
+    font-weight: bold;
+}
+
+course, semester {
+    display: block;
+    color: #666;
+}</pre>
+      </div>
+      <div class="output-preview">
+        <h4>Output Preview:</h4>
+        <p><b>Student ID: 70</b></p>
+        <p><b>Name:</b> Nilam Hatakar</p>
+        <p><b>Course:</b> B.Tech CSE</p>
+        <p><b>Semester:</b> IV</p>
+      </div>
+    </div>
+
+    <!-- Experiment 12 Detail -->
+    <div class="detail-section" id="exp12-detail">
+      <button class="close-btn" onclick="toggleExp12()">Close</button>
+      <div class="exp-header">
+        <h3>Experiment 12: XSLT Implementation</h3>
+        <p><b>Objective:</b> To learn XSLT and its application for transforming XML to HTML.</p>
+      </div>
+      <div class="info-box">
+        <b>Name:</b> Nilam Hatakar | <b>Roll No:</b> 70
+      </div>
+      <div class="button-group">
+        <button class="code-btn xml active" onclick="showExp12Code('xml')">View XML Code</button>
+        <button class="code-btn xsl" onclick="showExp12Code('xsl')">View XSLT Code</button>
+      </div>
+      <div id="exp12-xml" class="code-container active">
+        <pre><span class="comment">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="comment">&lt;?xml-stylesheet type="text/xsl" href="cat.xsl"?&gt;</span>
+<span class="tag">&lt;students&gt;</span>
+  <span class="tag">&lt;student</span> <span class="attr">id</span>=<span class="value">"70"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;name&gt;</span>Nilam Hatakar<span class="tag">&lt;/name&gt;</span>
+    <span class="tag">&lt;course&gt;</span>B.Tech CSE<span class="tag">&lt;/course&gt;</span>
+    <span class="tag">&lt;semester&gt;</span>IV<span class="tag">&lt;/semester&gt;</span>
+  <span class="tag">&lt;/student&gt;</span>
+<span class="tag">&lt;/students&gt;</span></pre>
+      </div>
+      <div id="exp12-xsl" class="code-container">
+        <pre><span class="comment">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="tag">&lt;xsl:stylesheet</span> <span class="attr">version</span>=<span class="value">"1.0"</span> <span class="attr">xmlns:xsl</span>=<span class="value">"http://www.w3.org/1999/XSL/Transform"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;xsl:template</span> <span class="attr">match</span>=<span class="value">"/students"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;xsl:for-each</span> <span class="attr">select</span>=<span class="value">"student"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div&gt;</span>
+        <span class="tag">&lt;p&gt;</span><b>Roll No:</b> <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"@id"</span><span class="tag">/&gt;</span><span class="tag">&lt;/p&gt;</span>
+        <span class="tag">&lt;p&gt;</span><b>Name:</b> <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"name"</span><span class="tag">/&gt;</span><span class="tag">&lt;/p&gt;</span>
+        <span class="tag">&lt;p&gt;</span><b>Course:</b> <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"course"</span><span class="tag">/&gt;</span><span class="tag">&lt;/p&gt;</span>
+        <span class="tag">&lt;p&gt;</span><b>Semester:</b> <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"semester"</span><span class="tag">/&gt;</span><span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/xsl:for-each&gt;</span>
+  <span class="tag">&lt;/xsl:template&gt;</span>
+<span class="tag">&lt;/xsl:stylesheet&gt;</span></pre>
+      </div>
+      <div class="output-preview">
+        <h4>Transformed Output:</h4>
+        <table>
+          <tr><th>Roll No</th><th>Name</th><th>Course</th><th>Semester</th></tr>
+          <tr><td>70</td><td>Nilam Hatakar</td><td>B.Tech CSE</td><td>IV</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Experiment 13 Detail -->
+    <div class="detail-section" id="exp13-detail">
+      <button class="close-btn" onclick="toggleExp13()">Close</button>
+      <div class="exp-header">
+        <h3>Experiment 13: Student Application using XSLT</h3>
+        <p><b>Objective:</b> To apply XSLT and conditional statements for student data transformation.</p>
+      </div>
+      <div class="info-box">
+        <b>Name:</b> Nilam Hatakar | <b>Roll No:</b> 70
+      </div>
+      <div class="button-group">
+        <button class="code-btn xml active" onclick="showExp13Code('xml')">View XML Code</button>
+        <button class="code-btn xsl" onclick="showExp13Code('xsl')">View XSLT Code</button>
+      </div>
+      <div id="exp13-xml" class="code-container active">
+        <pre><span class="comment">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="tag">&lt;students&gt;</span>
+    <span class="tag">&lt;student</span> <span class="attr">id</span>=<span class="value">"101"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;name&gt;</span>Sahil Patil<span class="tag">&lt;/name&gt;</span>
+        <span class="tag">&lt;course&gt;</span>BTech<span class="tag">&lt;/course&gt;</span>
+        <span class="tag">&lt;marks&gt;</span>95<span class="tag">&lt;/marks&gt;</span>
+    <span class="tag">&lt;/student&gt;</span>
+    <span class="tag">&lt;student</span> <span class="attr">id</span>=<span class="value">"102"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;name&gt;</span>Nilam Hatkar<span class="tag">&lt;/name&gt;</span>
+        <span class="tag">&lt;course&gt;</span>BTech<span class="tag">&lt;/course&gt;</span>
+        <span class="tag">&lt;marks&gt;</span>80<span class="tag">&lt;/marks&gt;</span>
+    <span class="tag">&lt;/student&gt;</span>
+<span class="tag">&lt;/students&gt;</span></pre>
+      </div>
+      <div id="exp13-xsl" class="code-container">
+        <pre><span class="comment">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="tag">&lt;xsl:stylesheet</span> <span class="attr">version</span>=<span class="value">"1.0"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;xsl:template</span> <span class="attr">match</span>=<span class="value">"/students"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;xsl:for-each</span> <span class="attr">select</span>=<span class="value">"student"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;tr&gt;</span>
+        <span class="tag">&lt;td&gt;</span><span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"@id"</span><span class="tag">/&gt;</span><span class="tag">&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;</span><span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"name"</span><span class="tag">/&gt;</span><span class="tag">&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;</span><span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"course"</span><span class="tag">/&gt;</span><span class="tag">&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;</span>
+          <span class="tag">&lt;xsl:choose&gt;</span>
+            <span class="tag">&lt;xsl:when</span> <span class="attr">test</span>=<span class="value">"marks &gt;= 85"</span><span class="tag">&gt;</span>A<span class="tag">&lt;/xsl:when&gt;</span>
+            <span class="tag">&lt;xsl:when</span> <span class="attr">test</span>=<span class="value">"marks &gt;= 75"</span><span class="tag">&gt;</span>B<span class="tag">&lt;/xsl:when&gt;</span>
+            <span class="tag">&lt;xsl:otherwise&gt;</span>C<span class="tag">&lt;/xsl:otherwise&gt;</span>
+          <span class="tag">&lt;/xsl:choose&gt;</span>
+        <span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;/tr&gt;</span>
+    <span class="tag">&lt;/xsl:for-each&gt;</span>
+  <span class="tag">&lt;/xsl:template&gt;</span>
+<span class="tag">&lt;/xsl:stylesheet&gt;</span></pre>
+      </div>
+      <div class="output-preview">
+        <h4>Transformed Output with Conditional Grading:</h4>
+        <table>
+          <tr><th>Roll No</th><th>Name</th><th>Course</th><th>Grade</th></tr>
+          <tr><td>101</td><td>Sahil Patil</td><td>BTech</td><td><b>A</b></td></tr>
+          <tr><td>102</td><td>Nilam Hatkar</td><td>BTech</td><td><b>B</b></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2026 Nilam Hatakar | Web Development Lab
+    </div>
+  </main>
+
+  <script>
+    function toggleExp11() {
+      document.getElementById('exp11-detail').classList.toggle('active');
+    }
+
+    function toggleExp12() {
+      document.getElementById('exp12-detail').classList.toggle('active');
+    }
+
+    function toggleExp13() {
+      document.getElementById('exp13-detail').classList.toggle('active');
+    }
+
+    function showExp11Code(type) {
+      document.getElementById('exp11-xml').classList.toggle('active', type === 'xml');
+      document.getElementById('exp11-css').classList.toggle('active', type === 'css');
+      document.querySelectorAll('#exp11-detail .code-btn.xml').forEach(btn => btn.classList.toggle('active', type === 'xml'));
+      document.querySelectorAll('#exp11-detail .code-btn.css').forEach(btn => btn.classList.toggle('active', type === 'css'));
+    }
+
+    function showExp12Code(type) {
+      document.getElementById('exp12-xml').classList.toggle('active', type === 'xml');
+      document.getElementById('exp12-xsl').classList.toggle('active', type === 'xsl');
+      document.querySelectorAll('#exp12-detail .code-btn.xml').forEach(btn => btn.classList.toggle('active', type === 'xml'));
+      document.querySelectorAll('#exp12-detail .code-btn.xsl').forEach(btn => btn.classList.toggle('active', type === 'xsl'));
+    }
+
+    function showExp13Code(type) {
+      document.getElementById('exp13-xml').classList.toggle('active', type === 'xml');
+      document.getElementById('exp13-xsl').classList.toggle('active', type === 'xsl');
+      document.querySelectorAll('#exp13-detail .code-btn.xml').forEach(btn => btn.classList.toggle('active', type === 'xml'));
+      document.querySelectorAll('#exp13-detail .code-btn.xsl').forEach(btn => btn.classList.toggle('active', type === 'xsl'));
+    }
+  </script>
+</body>
+</html>
