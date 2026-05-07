@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experiment 13 - Student Application</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      padding: 40px 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .info {
+      background: #f0f9ff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border-left: 4px solid #4facfe;
+    }
+
+    .info p {
+      margin: 8px 0;
+      color: #333;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-xml {
+      background: #4facfe;
+      color: white;
+    }
+
+    .btn-xml:hover {
+      background: #3699f9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(79, 172, 254, 0.4);
+    }
+
+    .btn-xml.active {
+      background: #4facfe;
+      box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+    }
+
+    .btn-xsl {
+      background: #00f2fe;
+      color: #333;
+    }
+
+    .btn-xsl:hover {
+      background: #00d9e9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 242, 254, 0.4);
+    }
+
+    .btn-xsl.active {
+      background: #00f2fe;
+      box-shadow: 0 4px 12px rgba(0, 242, 254, 0.4);
+    }
+
+    .code-container {
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: none;
+      overflow-x: auto;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .code-container.active {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    pre {
+      color: #d4d4d4;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .tag {
+      color: #569cd6;
+    }
+
+    .attr {
+      color: #9cdcfe;
+    }
+
+    .value {
+      color: #ce9178;
+    }
+
+    .comment {
+      color: #6a9955;
+    }
+
+    .keyword {
+      color: #569cd6;
+    }
+
+    .output-section {
+      background: #f0f9ff;
+      border: 2px solid #4facfe;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .output-section h3 {
+      color: #4facfe;
+      margin-bottom: 15px;
+    }
+
+    #output {
+      padding: 15px;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #4facfe;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f0f9ff;
+    }
+
+    .footer {
+      background: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      color: #666;
+      border-top: 1px solid #e0e0e0;
+      font-size: 0.95rem;
+    }
+
+    a.back-link {
+      color: #4facfe;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+
+    a.back-link:hover {
+      color: #00f2fe;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Experiment 13: Student Application using XSLT</h1>
+      <p>XSLT and Conditional Statements Implementation</p>
+    </header>
+
+    <div class="content">
+      <a href="../index.html" class="back-link">← Back to Home</a>
+
+      <div class="info">
+        <p><b>Name:</b> Nilam Hatakar</p>
+        <p><b>Roll No:</b> 70</p>
+        <p><b>Objective:</b> To apply XSLT and conditional statements for student data transformation.</p>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-xml active" onclick="showXML()">View XML Code</button>
+        <button class="btn-xsl" onclick="showXSL()">View XSLT Code</button>
+      </div>
+
+      <div id="xmlContainer" class="code-container active">
+        <pre><span class="comment">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="comment">&lt;?xml-stylesheet type="text/xsl" href="students.xsl"?&gt;</span>
+<span class="tag">&lt;students&gt;</span>
+    <span class="tag">&lt;student</span> <span class="attr">id</span>=<span class="value">"101"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;name&gt;</span>Sahil Patil<span class="tag">&lt;/name&gt;</span>
+        <span class="tag">&lt;course&gt;</span>BTech<span class="tag">&lt;/course&gt;</span>
+        <span class="tag">&lt;year&gt;</span>2<span class="tag">&lt;/year&gt;</span>
+        <span class="tag">&lt;marks&gt;</span>95<span class="tag">&lt;/marks&gt;</span>
+    <span class="tag">&lt;/student&gt;</span>
+
+    <span class="tag">&lt;student</span> <span class="attr">id</span>=<span class="value">"102"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;name&gt;</span>Nilam Hatkar<span class="tag">&lt;/name&gt;</span>
+        <span class="tag">&lt;course&gt;</span>BTech<span class="tag">&lt;/course&gt;</span>
+        <span class="tag">&lt;year&gt;</span>2<span class="tag">&lt;/year&gt;</span>
+        <span class="tag">&lt;marks&gt;</span>80<span class="tag">&lt;/marks&gt;</span>
+    <span class="tag">&lt;/student&gt;</span>
+<span class="tag">&lt;/students&gt;</span></pre>
+      </div>
+
+      <div id="xslContainer" class="code-container">
+        <pre><span class="comment">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="tag">&lt;xsl:stylesheet</span> <span class="attr">version</span>=<span class="value">"1.0"</span> <span class="attr">xmlns:xsl</span>=<span class="value">"http://www.w3.org/1999/XSL/Transform"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;xsl:template</span> <span class="attr">match</span>=<span class="value">"/students"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;html&gt;</span>
+      <span class="tag">&lt;head&gt;</span>
+        <span class="tag">&lt;title&gt;</span>Student Information<span class="tag">&lt;/title&gt;</span>
+      <span class="tag">&lt;/head&gt;</span>
+      <span class="tag">&lt;body&gt;</span>
+        <span class="tag">&lt;h2&gt;</span>Student Information<span class="tag">&lt;/h2&gt;</span>
+        <span class="tag">&lt;table</span> <span class="attr">border</span>=<span class="value">"1"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;tr&gt;</span>
+            <span class="tag">&lt;th&gt;</span>Roll No<span class="tag">&lt;/th&gt;</span>
+            <span class="tag">&lt;th&gt;</span>Name<span class="tag">&lt;/th&gt;</span>
+            <span class="tag">&lt;th&gt;</span>Course<span class="tag">&lt;/th&gt;</span>
+            <span class="tag">&lt;th&gt;</span>Grade<span class="tag">&lt;/th&gt;</span>
+          <span class="tag">&lt;/tr&gt;</span>
+          <span class="tag">&lt;xsl:for-each</span> <span class="attr">select</span>=<span class="value">"student"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;tr&gt;</span>
+              <span class="tag">&lt;td&gt;</span><span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"@id"</span><span class="tag">/&gt;</span><span class="tag">&lt;/td&gt;</span>
+              <span class="tag">&lt;td&gt;</span><span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"name"</span><span class="tag">/&gt;</span><span class="tag">&lt;/td&gt;</span>
+              <span class="tag">&lt;td&gt;</span><span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="value">"course"</span><span class="tag">/&gt;</span><span class="tag">&lt;/td&gt;</span>
+              <span class="tag">&lt;td&gt;</span>
+                <span class="tag">&lt;xsl:choose&gt;</span>
+                  <span class="tag">&lt;xsl:when</span> <span class="attr">test</span>=<span class="value">"marks &gt;= 85"</span><span class="tag">&gt;</span>A<span class="tag">&lt;/xsl:when&gt;</span>
+                  <span class="tag">&lt;xsl:when</span> <span class="attr">test</span>=<span class="value">"marks &gt;= 75"</span><span class="tag">&gt;</span>B<span class="tag">&lt;/xsl:when&gt;</span>
+                  <span class="tag">&lt;xsl:otherwise&gt;</span>C<span class="tag">&lt;/xsl:otherwise&gt;</span>
+                <span class="tag">&lt;/xsl:choose&gt;</span>
+              <span class="tag">&lt;/td&gt;</span>
+            <span class="tag">&lt;/tr&gt;</span>
+          <span class="tag">&lt;/xsl:for-each&gt;</span>
+        <span class="tag">&lt;/table&gt;</span>
+      <span class="tag">&lt;/body&gt;</span>
+    <span class="tag">&lt;/html&gt;</span>
+  <span class="tag">&lt;/xsl:template&gt;</span>
+<span class="tag">&lt;/xsl:stylesheet&gt;</span></pre>
+      </div>
+
+      <div class="output-section">
+        <h3>Transformed Output Preview:</h3>
+        <div id="output">Loading...</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2026 Web Development Lab | Experiment 13
+    </div>
+  </div>
+
+  <script>
+    async function loadXSLT() {
+      try {
+        const [xmlRes, xslRes] = await Promise.all([
+          fetch('students.xml'),
+          fetch('students.xsl')
+        ]);
+
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(await xmlRes.text(), 'application/xml');
+        const xslDoc = parser.parseFromString(await xslRes.text(), 'application/xml');
+
+        if (!window.XSLTProcessor) {
+          document.getElementById('output').innerHTML = '<p style="color: #f5576c;"><b>Your browser does not support XSLT in this way.</b></p>';
+          return;
+        }
+
+        const processor = new XSLTProcessor();
+        processor.importStylesheet(xslDoc);
+        const result = processor.transformToFragment(xmlDoc, document);
+
+        const output = document.getElementById('output');
+        output.textContent = '';
+        output.appendChild(result);
+      } catch (error) {
+        document.getElementById('output').innerHTML = '<p style="color: #f5576c;"><b>Failed to load XML/XSL:</b> ' + error + '</p>';
+      }
+    }
+
+    function showXML() {
+      document.getElementById('xmlContainer').classList.add('active');
+      document.getElementById('xslContainer').classList.remove('active');
+      document.querySelector('.btn-xml').classList.add('active');
+      document.querySelector('.btn-xsl').classList.remove('active');
+    }
+
+    function showXSL() {
+      document.getElementById('xslContainer').classList.add('active');
+      document.getElementById('xmlContainer').classList.remove('active');
+      document.querySelector('.btn-xsl').classList.add('active');
+      document.querySelector('.btn-xml').classList.remove('active');
+    }
+
+    loadXSLT();
+  </script>
+</body>
+</html>

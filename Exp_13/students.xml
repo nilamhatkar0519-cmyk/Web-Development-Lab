@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/xsl" href="students.xsl"?>
+
+<students>
+    <student id="101">
+        <name>Sahil Patil</name>
+        <course>BTech</course>
+        <year>2</year>
+        <marks>95</marks>
+    </student>
+
+    <student id="102">
+        <name>Nilam Hatkar</name>
+        <course>BTech</course>
+        <year>2</year>
+        <marks>80</marks>
+    </student>
+    <student id="103">
+        <name>Ritesh Sharma</name>
+        <course>BCA</course>
+        <year>2</year>
+        <marks>78</marks>
+    </student>
+
+    <student id="104">
+        <name>Priya Patel</name>
+        <course>BSc IT</course>
+        <year>3</year>
+        <marks>88</marks>
+    </student>
+
+    <student id="105">
+        <name>Amar Shinde</name>
+        <course>BCom</course>
+        <year>1</year>
+        <marks>65</marks>
+    </student>
+
+    <student id="106">
+        <name>Pradip Harel</name>
+        <course>MSC</course>
+        <year>1</year>
+        <marks>90</marks>
+    </student>
+</students>
